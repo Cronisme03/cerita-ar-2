@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AR Cerita Low-Poly — Budak & Bola</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
+  <style>
+    body, html { margin:0; height:100%; overflow:hidden; background:#000; }
+    #hint {
+      position: absolute; left:50%; transform:translateX(-50%);
+      top:10px; background:rgba(0,0,0,0.5); color:#fff;
+      padding:8px 12px; border-radius:8px; font-family: sans-serif;
+      z-index: 10;
+    }
+    #markerHint {
+      position: absolute; left:10px; bottom:10px; color:#fff; font-family:sans-serif;
+      background: rgba(0,0,0,0.5); padding:6px 10px; border-radius:6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="hint">🟢 Arahkan kamera ke marker (Hiro). Cerita akan mula automatik apabila marker dikesan.</div>
+  <div id="markerHint">Marker: HIRO (sila paparkan/print)</div>
+
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <!-- Marker -->
+    <a-marker preset="hiro" id="m">
+      <!-- Ground plane (just for reference) -->
+      <a-plane rotation="-90 0 0" width="3" height="3" color="#2b2b2b" opacity="0.3" position="0 0 0"></a-plane>
+
+      <!-- SCENE 1: Budak bermain bola bersama kawan-kawan -->
+      <a-entity id="scene1" position="0 0 0">
+        <!-- group of kids (low-poly stick-figures) -->
+        <a-entity id="kids" position="-0.6 0 0.6">
+          <!-- kid 1 (boy) -->
+          <a-entity position="0 0 0">
+            <a-sphere radius="0.08" position="0 0.45 0" color="#f9c9a9"></a-sphere> <!-- head -->
+            <a-box depth="0.1" height="0.25" width="0.18" position="0 0.2 0" color="#3b82f6"></a-box> <!-- body -->
+          </a-entity>
+          <!-- kid 2 -->
+          <a-entity position="0.4 0 0">
+            <a-sphere radius="0.07" position="0 0.45 0" color="#f9c9a9"></a-sphere>
+            <a-box depth="0.09" height="0.22" width="0.16" position="0 0.2 0" color="#10b981"></a-box>
+          </a-entity>
+          <!-- kid 3 -->
+          <a-entity position="0.8 0 0">
+            <a-sphere radius="0.07" position="0 0.45 0" color="#f9c9a9"></a-sphere>
+            <a-box depth="0.09" height="0.22" width="0.16" position="0 0.2 0" color="#f97316"></a-box>
+          </a-entity>
+        </a-entity>
+
+        <!-- Ball (will roll) -->
+        <a-sphere id="ball" color="#ffdd57" radius="0.08" position="-0.3 0.08 0.25"></a-sphere>
+
+        <!-- Label -->
+        <a-entity position="0 1 0" text="value: Babak 1 – Budak bermain bola; align:center; width:3; color:#fff"></a-entity>
+      </a-entity>
+
+      <!-- SCENE 2: Bola menuju ke arah perempuan tua yang menunggang basikal -->
+      <a-entity id="scene2" visible="false" position="0 0 0">
+        <!-- elderly woman on bicycle (low-poly) -->
+        <a-entity id="woman" position="0.9 0 0.1">
+          <!-- bicycle body -->
+          <a-box width="0.5" height="0.04" depth="0.12" position="0 0.28 0" color="#6b7280"></a-box>
+          <!-- wheels -->
+          <a-cylinder radius="0.12" height="0.02" rotation="0 0 90" position="-0.18 0.12 0" color="#111827"></a-cylinder>
+          <a-cylinder radius="0.12" height="0.02" rotation="0 0 90" position="0.18 0.12 0" color="#111827"></a-cylinder>
+          <!-- rider -->
+          <a-sphere radius="0.07" position="0 0.55 0" color="#f9c9a9"></a-sphere>
+          <a-box width="0.18" height="0.25" depth="0.09" position="0 0.35 0" color="#a78bfa"></a-box>
+        </a-entity>
+
+        <a-entity position="0 1 0" text="value: Babak 2 – Bola menuju ke arah perempuan tua; align:center; width:3; color:#fff"></a-entity>
+      </a-entity>
+
+      <!-- SCENE 3: Perempuan itu jatuh (animasi rotate dan turun) -->
+      <a-entity id="scene3" visible="false" position="0 0 0">
+        <!-- woman collapsed (we will animate rotation) -->
+        <a-entity id="womanFall" position="0.9 0 0.1">
+          <a-box id="bike" width="0.5" height="0.04" depth="0.12" position="0 0.28 0" color="#6b7280"></a-box>
+          <a-cylinder radius="0.12" height="0.02" rotation="0 0 90" position="-0.18 0.12 0" color="#111827"></a-cylinder>
+          <a-cylinder radius="0.12" height="0.02" rotation="0 0 90" position="0.18 0.12 0" color="#111827"></a-cylinder>
+          <a-sphere id="head" radius="0.07" position="0 0.55 0" color="#f9c9a9"></a-sphere>
+          <a-box id="body" width="0.18" height="0.25" depth="0.09" position="0 0.35 0" color="#a78bfa"></a-box>
+        </a-entity>
+
+        <a-entity position="0 1 0" text="value: Babak 3 – Perempuan jatuh; align:center; width:3; color:#fff"></a-entity>
+      </a-entity>
+
+      <!-- THE END -->
+      <a-entity id="theend" visible="false" position="0 0 0">
+        <a-entity position="0 0.5 0" text="value: THE END; align:center; width:6; color:#ff6b6b;"></a-entity>
+      </a-entity>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    // Elements
+    const marker = document.querySelector('#m');
+    const scene1 = document.querySelector('#scene1');
+    const scene2 = document.querySelector('#scene2');
+    const scene3 = document.querySelector('#scene3');
+    const theend = document.querySelector('#theend');
+    const ball = document.querySelector('#ball');
+    const woman = document.querySelector('#woman');
+    const womanFall = document.querySelector('#womanFall');
+
+    // Animation timeline durations (ms)
+    const t1 = 0;        // start immediately on markerFound
+    const t1Duration = 4000; // scene1 duration
+    const t2Duration = 4000; // scene2 duration
+    const t3Duration = 4000; // scene3 duration
+
+    let started = false;
+
+    // Helper: animate ball rolling using setInterval to update position
+    function animateBallRoll(from, to, duration) {
+      const start = performance.now();
+      return new Promise(resolve => {
+        function step(now) {
+          const elapsed = now - start;
+          const p = Math.min(1, elapsed / duration);
+          // linear interpolation
+          const x = from.x + (to.x - from.x) * p;
+          const z = from.z + (to.z - from.z) * p;
+          ball.setAttribute('position', `${x} 0.08 ${z}`);
+          // simple rotation illusion by slightly scaling Y
+          ball.setAttribute('rotation', `0 ${p*360} 0`);
+          if (p < 1) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    // Helper: animate woman biking towards center (scene2)
+    function animateWomanApproach(from, to, duration) {
+      const start = performance.now();
+      return new Promise(resolve => {
+        function step(now) {
+          const elapsed = now - start;
+          const p = Math.min(1, elapsed / duration);
+          const x = from.x + (to.x - from.x) * p;
+          woman.setAttribute('position', `${x} 0 ${from.z}`);
+          if (p < 1) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    // Animate fall: rotate and lower slowly
+    function animateWomanFall(duration) {
+      const start = performance.now();
+      const initialPos = { x: 0.9, y: 0, z: 0.1 };
+      return new Promise(resolve => {
+        function step(now) {
+          const elapsed = now - start;
+          const p = Math.min(1, elapsed / duration);
+          // rotate -80 degrees on X and lower Y a bit
+          const rotX = p * -80;
+          const y = 0 + ( -0.08 * p );
+          womanFall.setAttribute('rotation', `${rotX} 0 0`);
+          womanFall.setAttribute('position', `${initialPos.x} ${y} ${initialPos.z - 0.06*p}`);
+          if (p < 1) requestAnimationFrame(step);
+          else resolve();
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    // Full timeline
+    marker.addEventListener('markerFound', async () => {
+      if (started) return;
+      started = true;
+
+      // Scene 1 visible
+      scene1.setAttribute('visible', true);
+      scene2.setAttribute('visible', false);
+      scene3.setAttribute('visible', false);
+      theend.setAttribute('visible', false);
+
+      // scene1: kids play, ball rolls towards center (simulate kick)
+      await animateBallRoll({x:-0.3, z:0.25}, {x:0.4, z:0.25}, t1Duration);
+
+      // switch to scene2
+      scene1.setAttribute('visible', false);
+      scene2.setAttribute('visible', true);
+
+      // in scene2: woman is further right; animate her approaching a little
+      await Promise.all([
+        animateWomanApproach({x:0.9, z:0.1}, {x:0.6, z:0.1}, t2Duration),
+        // ball continues from center to hit near the woman
+        animateBallRoll({x:0.4, z:0.25}, {x:0.7, z:0.12}, t2Duration)
+      ]);
+
+      // switch to scene3
+      scene2.setAttribute('visible', false);
+      scene3.setAttribute('visible', true);
+
+      // scene3: show the woman falling
+      await animateWomanFall(t3Duration);
+
+      // The End
+      scene3.setAttribute('visible', false);
+      theend.setAttribute('visible', true);
+    });
+
+    // Reset when marker lost (optional minimal reset)
+    marker.addEventListener('markerLost', () => {
+      // allow re-start after marker re-detected
+      started = false;
+      // reset positions and visibility
+      scene1.setAttribute('visible', true);
+      scene2.setAttribute('visible', false);
+      scene3.setAttribute('visible', false);
+      theend.setAttribute('visible', false);
+      ball.setAttribute('position', '-0.3 0.08 0.25');
+      woman.setAttribute('position', '0.9 0 0.1');
+      womanFall.setAttribute('position', '0.9 0 0.1');
+      womanFall.setAttribute('rotation', '0 0 0');
+    });
+  </script>
+</body>
+</html>
